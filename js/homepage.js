@@ -2,15 +2,16 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebas
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { getFirestore, getDoc, doc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "AIzaSyA8VvXw710toyzNQ-prNycI5OhPh3bm8YI",
-    authDomain: "byetrash.firebaseapp.com",
-    projectId: "byetrash",
-    storageBucket: "byetrash.firebasestorage.app",
-    messagingSenderId: "875231949079",
-    appId: "1:875231949079:web:505c1630d3bdb4ebf10752",
-    measurementId: "G-58NKS6S5T5"
-};
+    apiKey: "AIzaSyDboHC-1yaGw7oVlg9BW555w6X0s6vLMtI",
+    authDomain: "byetrash-442808.firebaseapp.com",
+    projectId: "byetrash-442808",
+    storageBucket: "byetrash-442808.firebasestorage.app",
+    messagingSenderId: "913316825970",
+    appId: "1:913316825970:web:95bed65a1fd02ba8cc2beb",
+    measurementId: "G-29P29DH4YY"
+  };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
@@ -35,9 +36,17 @@ onAuthStateChanged(auth, (user) => {
                 .then((docSnap) => {
                     if (docSnap.exists()) {
                         const userData = docSnap.data();
-                        document.getElementById('loggedUserFName').innerText = userData.firstName;
-                        document.getElementById('loggedUserEmail').innerText = userData.email;
-                        document.getElementById('loggedUserLName').innerText = userData.lastName;
+                        document.getElementById('user-name').innerText = `${userData.firstName} ${userData.lastName}`;
+                        document.getElementById('user-email').innerText = userData.email;
+
+                        // Display notification
+                        const notification = document.getElementById('notification');
+                        notification.style.display = 'block';
+
+                        // Hide notification after 5 seconds
+                        setTimeout(() => {
+                            notification.style.display = 'none';
+                        }, 5000);
                     } else {
                         console.log("no document found matching id");
                     }
@@ -60,7 +69,7 @@ logoutButton.addEventListener('click', () => {
     localStorage.removeItem('loggedInUserId');
     signOut(auth)
         .then(() => {
-            window.location.href = 'index.html';
+            window.location.href = 'dashboard.html';
         })
         .catch((error) => {
             console.error('Error Signing out:', error);
